@@ -1,22 +1,35 @@
 
+DROP TABLE IF EXISTS [Album];
+DROP TABLE IF EXISTS [Artist];
+DROP TABLE IF EXISTS [Customer];
+DROP TABLE IF EXISTS [Employee];
+DROP TABLE IF EXISTS [Genre];
+DROP TABLE IF EXISTS [Invoice];
+DROP TABLE IF EXISTS [InvoiceLine];
+DROP TABLE IF EXISTS [MediaType];
+DROP TABLE IF EXISTS [Playlist];
+DROP TABLE IF EXISTS [PlaylistTrack];
+DROP TABLE IF EXISTS [Track];
+
+
 CREATE TABLE [Album]
 (
-    [AlbumId] INTEGER  NOT NULL,
+    [AlbumId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     [Title] NVARCHAR(160)  NOT NULL,
     [ArtistId] INTEGER  NOT NULL,
-    CONSTRAINT [PK_Album] PRIMARY KEY  ([AlbumId]),
+    -- CONSTRAINT [PK_Album] PRIMARY KEY  ([AlbumId]),
     FOREIGN KEY ([ArtistId]) REFERENCES [Artist] ([ArtistId]) 
 		ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 CREATE TABLE [Artist]
 (
-    [ArtistId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(120),
-    CONSTRAINT [PK_Artist] PRIMARY KEY  ([ArtistId])
+    [ArtistId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    [Name] NVARCHAR(120)
+    -- CONSTRAINT [PK_Artist] PRIMARY KEY  ([ArtistId])
 );
 CREATE TABLE [Customer]
 (
-    [CustomerId] INTEGER  NOT NULL,
+    [CustomerId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     [FirstName] NVARCHAR(40)  NOT NULL,
     [LastName] NVARCHAR(20)  NOT NULL,
     [Company] NVARCHAR(80),
@@ -29,13 +42,13 @@ CREATE TABLE [Customer]
     [Fax] NVARCHAR(24),
     [Email] NVARCHAR(60)  NOT NULL,
     [SupportRepId] INTEGER,
-    CONSTRAINT [PK_Customer] PRIMARY KEY  ([CustomerId]),
+    -- CONSTRAINT [PK_Customer] PRIMARY KEY  ([CustomerId]),
     FOREIGN KEY ([SupportRepId]) REFERENCES [Employee] ([EmployeeId]) 
 		ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 CREATE TABLE [Employee]
 (
-    [EmployeeId] INTEGER  NOT NULL,
+    [EmployeeId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     [LastName] NVARCHAR(20)  NOT NULL,
     [FirstName] NVARCHAR(20)  NOT NULL,
     [Title] NVARCHAR(30),
@@ -50,19 +63,19 @@ CREATE TABLE [Employee]
     [Phone] NVARCHAR(24),
     [Fax] NVARCHAR(24),
     [Email] NVARCHAR(60),
-    CONSTRAINT [PK_Employee] PRIMARY KEY  ([EmployeeId]),
+    -- CONSTRAINT [PK_Employee] PRIMARY KEY  ([EmployeeId]),
     FOREIGN KEY ([ReportsTo]) REFERENCES [Employee] ([EmployeeId]) 
 		ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 CREATE TABLE [Genre]
 (
-    [GenreId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(120),
-    CONSTRAINT [PK_Genre] PRIMARY KEY  ([GenreId])
+    [GenreId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    [Name] NVARCHAR(120)
+    -- CONSTRAINT [PK_Genre] PRIMARY KEY  ([GenreId])
 );
 CREATE TABLE [Invoice]
 (
-    [InvoiceId] INTEGER  NOT NULL,
+    [InvoiceId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     [CustomerId] INTEGER  NOT NULL,
     [InvoiceDate] DATETIME  NOT NULL,
     [BillingAddress] NVARCHAR(70),
@@ -71,18 +84,18 @@ CREATE TABLE [Invoice]
     [BillingCountry] NVARCHAR(40),
     [BillingPostalCode] NVARCHAR(10),
     [Total] NUMERIC(10,2)  NOT NULL,
-    CONSTRAINT [PK_Invoice] PRIMARY KEY  ([InvoiceId]),
+    -- CONSTRAINT [PK_Invoice] PRIMARY KEY  ([InvoiceId]),
     FOREIGN KEY ([CustomerId]) REFERENCES [Customer] ([CustomerId]) 
 		ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 CREATE TABLE [InvoiceLine]
 (
-    [InvoiceLineId] INTEGER  NOT NULL,
+    [InvoiceLineId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     [InvoiceId] INTEGER  NOT NULL,
     [TrackId] INTEGER  NOT NULL,
     [UnitPrice] NUMERIC(10,2)  NOT NULL,
     [Quantity] INTEGER  NOT NULL,
-    CONSTRAINT [PK_InvoiceLine] PRIMARY KEY  ([InvoiceLineId]),
+    -- CONSTRAINT [PK_InvoiceLine] PRIMARY KEY  ([InvoiceLineId]),
     FOREIGN KEY ([InvoiceId]) REFERENCES [Invoice] ([InvoiceId]) 
 		ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY ([TrackId]) REFERENCES [Track] ([TrackId]) 
@@ -90,15 +103,15 @@ CREATE TABLE [InvoiceLine]
 );
 CREATE TABLE [MediaType]
 (
-    [MediaTypeId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(120),
-    CONSTRAINT [PK_MediaType] PRIMARY KEY  ([MediaTypeId])
+    [MediaTypeId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    [Name] NVARCHAR(120)
+    -- CONSTRAINT [PK_MediaType] PRIMARY KEY  ([MediaTypeId])
 );
 CREATE TABLE [Playlist]
 (
-    [PlaylistId] INTEGER  NOT NULL,
-    [Name] NVARCHAR(120),
-    CONSTRAINT [PK_Playlist] PRIMARY KEY  ([PlaylistId])
+    [PlaylistId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    [Name] NVARCHAR(120)
+    -- CONSTRAINT [PK_Playlist] PRIMARY KEY  ([PlaylistId])
 );
 CREATE TABLE [PlaylistTrack]
 (
@@ -112,7 +125,7 @@ CREATE TABLE [PlaylistTrack]
 );
 CREATE TABLE [Track]
 (
-    [TrackId] INTEGER  NOT NULL,
+    [TrackId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     [Name] NVARCHAR(200)  NOT NULL,
     [AlbumId] INTEGER,
     [MediaTypeId] INTEGER  NOT NULL,
@@ -121,7 +134,7 @@ CREATE TABLE [Track]
     [Milliseconds] INTEGER  NOT NULL,
     [Bytes] INTEGER,
     [UnitPrice] NUMERIC(10,2)  NOT NULL,
-    CONSTRAINT [PK_Track] PRIMARY KEY  ([TrackId]),
+    -- CONSTRAINT [PK_Track] PRIMARY KEY  ([TrackId]),
     FOREIGN KEY ([AlbumId]) REFERENCES [Album] ([AlbumId]) 
 		ON DELETE NO ACTION ON UPDATE NO ACTION,
     FOREIGN KEY ([GenreId]) REFERENCES [Genre] ([GenreId]) 
