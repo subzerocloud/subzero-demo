@@ -12,9 +12,9 @@ import cookieParser from 'cookie-parser';
 import nodemailer from 'nodemailer';
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import { init as authInit, getRequestHandler as auth } from '@subzerocloud/auth';
-import { init as restInit, getRequestHandler as rest, getSchemaHandler, getPermissionsHandler } from '@subzerocloud/rest'
-
+import { init as authInit, getRequestHandler as auth, AdminClient } from '@subzerocloud/auth';
+import { init as restInit, getRequestHandler as rest, getSchemaHandler, getPermissionsHandler } from '@subzerocloud/rest';
+import jws from 'jws';
 
 import Client from 'better-sqlite3';
 
@@ -36,11 +36,11 @@ const {
     
 } = process.env;
 
-export const dbUri: string = DB_URI || DATABASE_URL
-export const jwtSecret:string = JWT_SECRET || GOTRUE_JWT_SECRET
+export const dbUri: string = DB_URI || DATABASE_URL;
+export const jwtSecret: string = JWT_SECRET || GOTRUE_JWT_SECRET;
 const dbAnonRole = DB_ANON_ROLE || 'anon';
 const dbSchemas = DB_SCHEMAS ? DB_SCHEMAS.split(',') : ['public'];
-const staticDir = STATIC_DIR || path.resolve(__dirname, 'public')
+const staticDir = STATIC_DIR || path.resolve(__dirname, 'public');
 
 function envVarsPresent(envVars: (string | string[])[]): boolean {
     let present = true;
@@ -73,12 +73,12 @@ if (!envVarsPresent([
 
 // use DB_URI and JWT_SECRET as defaults for DATABASE_URL and GOTRUE_JWT_SECRET
 // which are used by @subzerocloud/auth (gotrue) 
-if (!DATABASE_URL) process.env.DATABASE_URL = DB_URI
-if (!GOTRUE_JWT_SECRET) process.env.GOTRUE_JWT_SECRET = JWT_SECRET
+if (!DATABASE_URL) process.env.DATABASE_URL = DB_URI;
+if (!GOTRUE_JWT_SECRET) process.env.GOTRUE_JWT_SECRET = JWT_SECRET;
 
 
 const dbPool = new Client(dbUri.replace('sqlite://',''));
-import permissions from './permissions'
+import permissions from './permissions';
 
 
 // Create the Express application
@@ -225,6 +225,17 @@ export async function init() {
     });
 }
 
+async function createDemoUser() {
+    const email = 'admin@demo.com';
+    const password = 'demo';
+    const role = 'authenticated';
+    const adminApiUrl = `http://localhost:3000/auth/admin`;
+    const secret = jwtSecret;
+    const token = jws.sign({ header: { alg: 'HS256' }, payload: { role: 'service_role' }, secret });
+    const adminClient = new AdminClient(`${adminApiUrl}`, token);
+    await adminClient.createUser(email, password, role);
+}
+
 // in dev mode let vite (and the subzero plugin for vite) handle the server start
 const startServer = NODE_ENV === 'production' && !(global as any).__vite_start_time;
 function gracefulShutdown() {
@@ -237,6 +248,7 @@ if (startServer) {
     const server = app.listen(port, async () => {
         try {
             await init();
+            await createDemoUser();
         } catch (e) {
             server.close();
             console.error(e);
