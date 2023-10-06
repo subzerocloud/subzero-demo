@@ -155,6 +155,11 @@ export const optionalAuth = (req: Request, res: Response, next: NextFunction) =>
     )(req, res, next);
 };
 
+// Add /up route for health checks ()
+app.get('/up', (req, res) => {
+    res.send('OK');
+});
+
 // The auth module provides a GoTrue-compatible API for user authentication
 const authHandler = auth();
 app.use('/auth/v1', authHandler);
