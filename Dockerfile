@@ -4,6 +4,9 @@ FROM node:18 AS build-stage
 # Set working directory
 WORKDIR /app
 
+# install sqlite3
+RUN apt-get update && apt-get install -y sqlite3 
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
@@ -13,8 +16,6 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# install sqlite3
-RUN apt-get update && apt-get install -y sqlite3
 # see the internal sqlite database
 RUN cd ./db && sqlite3 app.db < init.sql
 
@@ -48,6 +49,9 @@ ENV GOTRUE_JWT_DEFAULT_GROUP_NAME=authenticated
 
 # Set working directory
 WORKDIR /app
+
+# kamal needs curl for healthchecks
+RUN apt-get update && apt-get install -y curl
 
 # Copy built app from the build stage
 COPY --from=build-stage /app/dist ./dist
