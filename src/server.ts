@@ -86,7 +86,9 @@ const app = express();
 export const handler = app;
 
 // set up logger
-const logger = morgan(NODE_ENV === 'production' ? 'combined' : 'dev');
+const logger = morgan(NODE_ENV === 'production' ? 'combined' : 'dev', {
+    skip: (req, res) => req.url === '/up'
+});
 app.use(logger);
 
 // set up CORS
