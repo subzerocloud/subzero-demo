@@ -1,6 +1,8 @@
 
 import { useState, ReactElement, useEffect } from 'react';
-//import UserIcon from '@mui/icons-material/People';
+import { Tooltip, IconButton, } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import InfoIcon from '@mui/icons-material/Info';
 import {
     Admin, DataProvider, Resource, Layout,
     AppBar, InspectorButton, TitlePortal,
@@ -21,6 +23,7 @@ import {
     raSubzeroEnglishMessages, ClientProvider,
 } from '@subzerocloud/ra-subzero';
 import Dashboard from './Dashboard';
+import InfoDialog from './InfoDialog';
 
 const instanceUrl = import.meta.env.VITE_API_URL || window.location.origin
 const defaultListOp = 'ilike'; // default operator for list filters
@@ -33,7 +36,39 @@ const i18nProvider = polyglotI18nProvider(() => {
 }, 'en');
 
 // we use a custom layout and app bar to add the inspector button (triggers UI customization)
-const MyAppBar = () => <AppBar><TitlePortal /><InspectorButton /></AppBar>;
+
+const MyAppBar = () => {
+    const [open, setOpen] = useState(true);
+    const handleOpen = () => { setOpen(true); };
+    const handleClose = () => { setOpen(false); };
+    return (
+        <AppBar>
+
+            <TitlePortal />
+            <InfoDialog open={open} handleClose={handleClose} />
+            <Tooltip title="About">
+                <IconButton
+                    aria-label="About"
+                    color="inherit"
+                    onClick={handleOpen}
+                >
+                    <InfoIcon />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Source Code">
+                <IconButton
+                    aria-label="Source Code"
+                    color="inherit"
+                    href="https://github.com/subzerocloud/subzero-demo"
+                >
+                    <GitHubIcon />
+                </IconButton>
+            </Tooltip>
+            
+            <InspectorButton />
+        </AppBar>
+    )
+};
 const MyMenu = () =>
     <div className="h-full">
         <Menu />
