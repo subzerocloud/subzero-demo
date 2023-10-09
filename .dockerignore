@@ -3,3 +3,5 @@ node_modules
 dist
 Dockerfile
 app.db
+.env*
+config

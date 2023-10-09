@@ -84,6 +84,7 @@ import permissions from './permissions';
 // Create the Express application
 const app = express();
 export const handler = app;
+app.set('trust proxy', true);
 
 // set up logger
 const logger = morgan(NODE_ENV === 'production' ? 'combined' : 'dev', {
