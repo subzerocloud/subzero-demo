@@ -71,7 +71,7 @@ const MyAppBar = () => {
 };
 const MyMenu = () =>
     <div className="h-full">
-        <Menu />
+        <Menu hasDashboard={true} />
         <a href="https://subzero.cloud" className="absolute bottom-0 left-0 ">
             <img className="w-24 ml-5 mb-5" src="https://subzero.cloud/builtwithlogo.svg" />
         </a>
