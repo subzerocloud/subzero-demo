@@ -125,14 +125,17 @@ export const App = () => {
             disableTelemetry
             dataProvider={dataProvider}
             authProvider={authProvider}
-            loginPage={
+                loginPage={<>
+                <div className="absolute top-5 left-1/2 transform -translate-x-1/2  bg-white p-2 rounded-lg shadow-md text-center ">
+                    <p>Login with: admin@demo.com / demo</p>
+                </div>
                 <LoginPage
                     //disableForgotPassword
                     //disableEmailPassword
                     // providers={['github']}
                     // domains={['subzero.cloud']}
                 />
-            }
+            </>}
             i18nProvider={i18nProvider}
             layout={MyLayout}
             // wait for the schema to be loaded before rendering the dashboard
