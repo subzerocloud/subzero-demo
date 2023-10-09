@@ -251,6 +251,10 @@ function gracefulShutdown() {
     console.log("Shutting down gracefully...");
     process.exit();
 }
+
+// Schedule the server to shut down every hour so the demo sqlite3 database is cleaned up
+setInterval(gracefulShutdown, 60 * 60 * 1000); // 60 minutes * 60 seconds * 1000 milliseconds
+
 if (startServer) {
     const port = PORT || 3000;
     const server = app.listen(port, async () => {
