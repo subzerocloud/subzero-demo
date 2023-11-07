@@ -13,7 +13,7 @@ import nodemailer from 'nodemailer';
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { init as authInit, getRequestHandler as auth, AdminClient } from '@subzerocloud/auth';
-import { init as restInit, getRequestHandler as rest, getSchemaHandler, getPermissionsHandler } from '@subzerocloud/rest';
+import { init as restInit, getRequestHandler as rest, getSchemaHandler, getPermissionsHandler, onSubzeroError } from '@subzerocloud/rest';
 import jws from 'jws';
 
 import Client from 'better-sqlite3';
@@ -216,6 +216,9 @@ if (staticDir && fs.existsSync(staticDir)) {
 else {
     console.warn(`Static directory ${staticDir} does not exist. Skipping...`);
 }
+
+// register error handlers
+app.use(onSubzeroError);
 
 export async function init() {
     // Initialize the auth module

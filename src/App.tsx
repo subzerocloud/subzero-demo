@@ -16,17 +16,16 @@ import englishMessages from 'ra-language-english';
 import {
     CreateGuesser, ListGuesser, EditGuesser, ShowGuesser,
     subzeroAuthProvider, subzeroDataProvider, createClient,
-    loadSchema, canAccess,
+    loadSchema, canAccessResource,
     formatResourceLabel,
     Schema, preferencePreservingLocalStorageStore,
     LoginPage, SetPasswordPage, ForgotPasswordPage,
     raSubzeroEnglishMessages, ClientProvider,
 } from '@subzerocloud/ra-subzero';
-import Dashboard from './Dashboard';
-import InfoDialog from './InfoDialog';
-
+import Dashboard from './components/Dashboard';
+import InfoDialog from './components/InfoDialog';
 const instanceUrl = import.meta.env.VITE_API_URL || window.location.origin
-const defaultListOp = 'ilike'; // default operator for list filters
+const defaultListOp = 'eq'; // default operator for list filters
 
 // create the api client, used by the auth and data providers
 const client = createClient(instanceUrl);
@@ -117,20 +116,6 @@ export const App = () => {
     }, [isAuthenticated]);
 
 
-    // Add customized resources here (use custom List, Edit, Show components)
-    const resources: ReactElement[] = [
-        // <Resource
-        //     icon={UserIcon}
-        //     key="customers"
-        //     name="customers"
-        //     create={canAccess(identity,permissions,'create','customers')?CreateGuesser:undefined}
-        //     list={canAccess(identity,permissions,'list','customers')?ListGuesser:undefined}
-        //     edit={canAccess(identity,permissions,'edit','customers')?EditGuesser:undefined}
-        //     show={canAccess(identity,permissions,'show','customers')?CustomerShow:undefined}
-        //     options={{ label: 'Customers', model: schema['customers'] }} />
-    ];
-    const definedResourceNames: string[] = resources.map((resource) => resource.props.name);
-    
     useEffect(() => {
         if (schema) {
             setDynamicResourceNames(Object.keys(schema)
@@ -154,10 +139,32 @@ export const App = () => {
         }
     }, [schema]);
 
+    const canAccess = (action: string, resource: string, filed?: string) => {
+        if (!identity || !permissions) return false;
+        return canAccessResource(identity, permissions, action, resource, filed)
+    }
+
+    // Add customized resources here (use custom List, Edit, Show components)
+    const customizedResources: ReactElement[] = [
+        // <Resource
+        //     key="todos"
+        //     name="todos"
+        //     create={canAccess('create','todos')?<CreateGuesser canAccess={canAccess} />:undefined}
+        //     list={canAccess('list','todos')?<ListGuesser canAccess={canAccess} />:undefined}
+        //     edit={canAccess('edit','todos')?<EditGuesser canAccess={canAccess} />:undefined}
+        //     show={canAccess('show','todos')?<CreateGuesser canAccess={canAccess} />:undefined}
+        //     options={{ label: 'Todos', model: schema?.todos, filterToQuery: s => ({ 'title@ilike': `%${s}%` }) }}
+        //     recordRepresentation={(r) => `${r.title}`}
+        // />,
+    ];
+
+    const definedResourceNames: string[] = customizedResources.map((resource) => resource.props.name);
+
     return (
         <ClientProvider value={client}>
         <Admin
             disableTelemetry
+            requireAuth
             dataProvider={dataProvider}
             authProvider={authProvider}
                 loginPage={<>
@@ -199,37 +206,50 @@ export const App = () => {
             {/* force react admin render when the schema is not yet loaded */}
             <Resource name="dummy" />
 
-            {/* Display customized resources */}
-            {resources}
+            {/* Define customized resources */}
+            {customizedResources}
 
-            {/* Display dynamic resources based on the database schema */}
+            {/* Define dynamically detected resources based on the database schema */}
             {dynamicResourceNames.map(model => {
                 let label = formatResourceLabel(model);
-                if(false) {
-                //if (process.env.NODE_ENV !== 'production') {
-                    // in dev mode, log the resource definition to the console
-                    // useful to copy/paste in the resources array above for customization
-                    console.log(`
-                    <Resource
-                        key="${model}"
-                        name="${model}"
-                        create={canAccess(identity,permissions,'create','${model}')?CreateGuesser:undefined}
-                        list={canAccess(identity,permissions,'list','${model}')?ListGuesser:undefined}
-                        edit={canAccess(identity,permissions,'edit','${model}')?EditGuesser:undefined}
-                        show={canAccess(identity,permissions,'show','${model}')?ShowGuesser:undefined}
-                        options={{ label: '${label}', model: schema['${model}'] }} />
-                    `)
-                }
                 return (<Resource
                     key={model}
                     name={model}
-                    create={canAccess(identity,permissions,'create',model)?CreateGuesser:undefined}
-                    list={canAccess(identity,permissions,'list',model)?ListGuesser:undefined}
-                    edit={canAccess(identity,permissions,'edit',model)?EditGuesser:undefined}
-                    show={canAccess(identity,permissions,'show',model)?ShowGuesser:undefined}
+                    create={canAccess('create',model)?<CreateGuesser canAccess={canAccess} />:undefined}
+                    list={canAccess('list',model)?<ListGuesser canAccess={canAccess} />:undefined}
+                    edit={canAccess('edit',model)?<EditGuesser canAccess={canAccess} />:undefined}
+                    show={canAccess('show',model)?<ShowGuesser canAccess={canAccess} />:undefined}
                     options={{ label, model: schema[model] }}
                 />)
             })}
+
+            {
+                /*
+                in dev mode, log the resource definition to the console
+                useful to copy/paste in the resources array above for customization
+                */
+                process.env.NODE_ENV !== 'production' &&
+                dynamicResourceNames.length > 0 &&
+                (
+                    console.log(`Guess resources:`),
+                    dynamicResourceNames.map(model => {
+                        let label = formatResourceLabel(model);
+                        console.log(`
+                            <Resource
+                                key="${model}"
+                                name="${model}"
+                                create={canAccess('create','${model}')?<CreateGuesser canAccess={canAccess} />:undefined}
+                                list={canAccess('list','${model}')?<ListGuesser canAccess={canAccess} />:undefined}
+                                edit={canAccess('edit','${model}')?<EditGuesser canAccess={canAccess} />:undefined}
+                                show={canAccess('show','${model}')?<ShowGuesser canAccess={canAccess} />:undefined}
+                                options={{ label: '${label}', model: schema?.${model} }}
+                            />
+                        `);
+                    }),
+                    null
+                )
+            }
+
         </Admin>
         </ClientProvider>
     )
