@@ -22,7 +22,8 @@
     "express": "^4.18.2"
   },
   "overrides": {
-    "@raphiniert/ra-data-postgrest": "2.0.0-alpha.4"
+    "@raphiniert/ra-data-postgrest": "2.0.0-alpha.4",
+    "whatwg-url": "^14.0.0"
   },
   "devDependencies": {
     "@mui/icons-material": "^5.0.0",

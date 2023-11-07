@@ -7,302 +7,210 @@
 
 export default [
     {
-        "table_schema": "public",
-        "table_name": "Album",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Album', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['AlbumId', 'Title', 'ArtistId'],
     },
     {
-        "table_schema": "public",
-        "table_name": "Artist",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Album', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['Title', 'ArtistId'],
     },
     {
-        "table_schema": "public",
-        "table_name": "Customer",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Album', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'Artist', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['ArtistId', 'Name'],
     },
     {
-        "table_schema": "public",
-        "table_name": "Employee",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Artist', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['Name'],
     },
     {
-        "table_schema": "public",
-        "table_name": "Genre",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Artist', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'Customer', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['CustomerId', 'FirstName', 'LastName', 'Company', 'Address', 'City', 'State', 'Country', 'PostalCode', 'Phone', 'Fax', 'Email', 'SupportRepId'],
     },
     {
-        "table_schema": "public",
-        "table_name": "Invoice",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Customer', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['FirstName', 'LastName', 'Company', 'Address', 'City', 'State', 'Country', 'PostalCode', 'Phone', 'Fax', 'Email', 'SupportRepId'],
     },
     {
-        "table_schema": "public",
-        "table_name": "InvoiceLine",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Customer', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'Employee', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['EmployeeId', 'LastName', 'FirstName', 'Title', 'ReportsTo', 'BirthDate', 'HireDate', 'Address', 'City', 'State', 'Country', 'PostalCode', 'Phone', 'Fax', 'Email'],
     },
     {
-        "table_schema": "public",
-        "table_name": "MediaType",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Employee', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['LastName', 'FirstName', 'Title', 'ReportsTo', 'BirthDate', 'HireDate', 'Address', 'City', 'State', 'Country', 'PostalCode', 'Phone', 'Fax', 'Email'],
     },
     {
-        "table_schema": "public",
-        "table_name": "Playlist",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Employee', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'Genre', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['GenreId', 'Name'],
     },
     {
-        "table_schema": "public",
-        "table_name": "PlaylistTrack",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
+        table_name: 'Genre', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['Name'],
     },
     {
-        "table_schema": "public",
-        "table_name": "Track",
-        "role": "authenticated",
-        "grant": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "policy_for": [
-            "select",
-            "insert",
-            "update",
-            "delete"
-        ],
-        "using": [
-            {
-                "sql": "true"
-            }
-        ],
-        "check": [
-            {
-                "sql": "true"
-            }
-        ]
-    }
+        table_name: 'Genre', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'Invoice', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['InvoiceId', 'CustomerId', 'InvoiceDate', 'BillingAddress', 'BillingCity', 'BillingState', 'BillingCountry', 'BillingPostalCode', 'Total'],
+    },
+    {
+        table_name: 'Invoice', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['CustomerId', 'InvoiceDate', 'BillingAddress', 'BillingCity', 'BillingState', 'BillingCountry', 'BillingPostalCode', 'Total'],
+    },
+    {
+        table_name: 'Invoice', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'InvoiceLine', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['InvoiceLineId', 'InvoiceId', 'TrackId', 'UnitPrice', 'Quantity'],
+    },
+    {
+        table_name: 'InvoiceLine', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['InvoiceId', 'TrackId', 'UnitPrice', 'Quantity'],
+    },
+    {
+        table_name: 'InvoiceLine', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'MediaType', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['MediaTypeId', 'Name'],
+    },
+    {
+        table_name: 'MediaType', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['Name'],
+    },
+    {
+        table_name: 'MediaType', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'Playlist', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['PlaylistId', 'Name'],
+    },
+    {
+        table_name: 'Playlist', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['Name'],
+    },
+    {
+        table_name: 'Playlist', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'Track', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['select', 'delete'],
+        columns: ['TrackId', 'Name', 'AlbumId', 'MediaTypeId', 'GenreId', 'Composer', 'Milliseconds', 'Bytes', 'UnitPrice'],
+    },
+    {
+        table_name: 'Track', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['insert', 'update'],
+        columns: ['Name', 'AlbumId', 'MediaTypeId', 'GenreId', 'Composer', 'Milliseconds', 'Bytes', 'UnitPrice'],
+    },
+    {
+        table_name: 'Track', table_schema: 'public',
+        role: 'authenticated',
+        policy_for: ['select', 'insert', 'update', 'delete'],
+        using: [{ "sql": "true" }],
+        check: [{ "sql": "true" }],
+    },
+
+    {
+        table_name: 'PlaylistTrack', table_schema: 'public',
+        role: 'authenticated',
+        grant: ['all']
+    },
 ]
 
 
